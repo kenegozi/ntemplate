@@ -1,11 +1,11 @@
 #reharper crap
-net/src/*[Rr]e[Ss]harper*
+src/*[Rr]e[Ss]harper*
 
 #VS crap
 *.suo
-/net/src/*/bin/
-/net/src/*/obj/
-/net/src/*/*.csproj.user
-/net/src/*.sln.cache
+src/*/bin/
+src/*/obj/
+src/*/*.csproj.user
+src/*.sln.cache
 
-/net/src/*.TeamCity.user
+src/*.TeamCity.user
