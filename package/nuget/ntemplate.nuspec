@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>NTemplate</id>
+    <version>0.9.0.25810</version>
+    <authors>Ken Egozi</authors>
+    <description>Simple ASP like template engine for .NET - extensible to other syntaces</description>
+    <language>en-US</language>
+  </metadata>
+</package>
