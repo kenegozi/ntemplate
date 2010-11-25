@@ -5,6 +5,10 @@ import GitSharp
 
 desc "initialization"
 target init, (generate_assembly_info):
+	repo = Repository(Directory.GetCurrentDirectory())
+	branch = repo.CurrentBranch
+	branch.Reset("HEAD" ResetBehavior.Hard)
+	
 	print 'initialized'
 	
 desc "Generating the shared assemblyInfo with version info"
@@ -13,7 +17,7 @@ target generate_assembly_info:
 	buildNumber = env('BUILD_NUMBER')
 	buildNumber = "0" if (string.IsNullOrEmpty(buildNumber))
 	with generate_assembly_info():
-		.file = 'src\\SolutionAssemblyInfo'
+		.file = 'src\\SolutionAssemblyInfo.cs'
 		.version = majorVersion + "." + buildNumber
 		
 	
@@ -21,7 +25,7 @@ target generate_assembly_info:
 
 desc "entry point for the teamcity build"
 target default:
-	repo = Repository(System.IO.Directory.GetCurrentDirectory())
+	repo = Repository(Directory.GetCurrentDirectory())
 	print repo.Head.CurrentCommit.CommitDate
 	print repo.Head.CurrentCommit.Hash
 	print repo.Head.CurrentCommit.Message
