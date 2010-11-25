@@ -3,37 +3,72 @@ import System.IO
 
 import GitSharp 
 
+repo as Repository
+version as string
+out = ".\\out"
+slnFile = ".\\src\\ntemplate.sln"
+configuration = 'Release'
+
+def getRepo:
+	if repo == null:
+		repo = Repository(Directory.GetCurrentDirectory())
+	return repo 
+	
+def setVersion:
+	majorVersion = File.ReadAllText('version').Trim()
+	buildNumber = env('BUILD_NUMBER')
+	buildNumber = "0" if (string.IsNullOrEmpty(buildNumber))
+	version = majorVersion + "." + buildNumber
+	print 'version: ' + version
+
+def writeBuildInfo:
+	sourceOutFilename = Path.Combine(out, 'BuildInfo.txt')
+	lines = ["Build info:","===================="]
+	lines.Add(" at: " + System.DateTime.UtcNow)
+	lines.Add(" branch: " + repo.CurrentBranch.Name)
+	lines.Add(" commit: " + repo.Head.CurrentCommit.Hash)
+	lines.Add(" source: " + env("BUILD_VCS_URL"))
+	
+	File.WriteAllLines(sourceOutFilename, array(string, lines))
+
+def revertAssemblyInfo:
+	index = Index(repo)
+	fullpath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "src/SolutionAssemblyInfo.cs"))
+	index.Checkout(fullpath)
+
+setVersion()
+getRepo()
+
+
+desc "set build configuration to Debug"
+target debug:
+	configuration = 'Debug'
+
+
 desc "initialization"
 target init, (generate_assembly_info):
-	repo = Repository(Directory.GetCurrentDirectory())
-	branch = repo.CurrentBranch
-	branch.Reset("HEAD" ResetBehavior.Hard)
-	
+	rmdir(out)
+	mkdir(out)
+	writeBuildInfo()
 	print 'initialized'
 	
 desc "Generating the shared assemblyInfo with version info"
 target generate_assembly_info:
-	majorVersion = File.ReadAllText('version').Trim()
-	buildNumber = env('BUILD_NUMBER')
-	buildNumber = "0" if (string.IsNullOrEmpty(buildNumber))
 	with generate_assembly_info():
 		.file = 'src\\SolutionAssemblyInfo.cs'
-		.version = majorVersion + "." + buildNumber
+		.version = version
 		
 	
-
-
 desc "entry point for the teamcity build"
-target default:
-	repo = Repository(Directory.GetCurrentDirectory())
-	print repo.Head.CurrentCommit.CommitDate
-	print repo.Head.CurrentCommit.Hash
-	print repo.Head.CurrentCommit.Message
-	print repo.Head.CurrentCommit.IsTag
-	print repo.CurrentBranch.Name	
-	print 'BUILD_NUMBER: ' + env('BUILD_NUMBER')
-	print 'build.number: ' + env('build.number')
-	print 'momo: ' + env('momo')
-	print 'args:' 
-	for a in GetCommandLineArgs():
-		print '  ' + a
+target default, (init, build, test):
+	print 'default target completed'
+	
+
+desc "Build the sources"
+target build:
+	msbuild(file: slnFile, configuration: configuration)
+
+desc "run unit tests"
+target test:
+	test_assemblies = (".\\src\\NTemplate.Tests\\bin\\${configuration}\\NTemplate.Tests.dll",)
+	nunit(assemblies: test_assemblies, toolPath: ".\\src\\packages\\NUnit.2.5.7.10213\\Tools\\nunit-console.exe" )
