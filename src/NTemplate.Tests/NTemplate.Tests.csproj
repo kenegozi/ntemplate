@@ -41,6 +41,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>Properties\SolutionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="EndToEnd\EndToEndTests.cs" />
     <Compile Include="EndToEnd\MarkupAndCodeBlocksTests.cs" />
     <Compile Include="EndToEnd\ParametersTests.cs" />
