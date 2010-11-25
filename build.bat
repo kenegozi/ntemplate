@@ -1,1 +1,1 @@
-tools\Phantom\Phantom.exe
+tools\Phantom\Phantom.exe %1 %2 %3 %4

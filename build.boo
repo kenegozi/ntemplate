@@ -1,6 +1,25 @@
 import System.Environment 
-#import GitSharp from """C:\home\dev\oss\git-dot-aspx\lib\GitSharp\GitSharp.dll"""
+import System.IO
+
 import GitSharp 
+
+desc "initialization"
+target init, (generate_assembly_info):
+	print 'initialized'
+	
+desc "Generating the shared assemblyInfo with version info"
+target generate_assembly_info:
+	majorVersion = File.ReadAllText('version').Trim()
+	buildNumber = env('BUILD_NUMBER')
+	buildNumber = "0" if (string.IsNullOrEmpty(buildNumber))
+	with generate_assembly_info():
+		.file = 'src\\SolutionAssemblyInfo'
+		.version = majorVersion + "." + buildNumber
+		
+	
+
+
+desc "entry point for the teamcity build"
 target default:
 	repo = Repository(System.IO.Directory.GetCurrentDirectory())
 	print repo.Head.CurrentCommit.CommitDate
