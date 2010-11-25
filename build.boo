@@ -21,6 +21,9 @@ def setVersion:
 	version = majorVersion + "." + buildNumber
 	print 'version: ' + version
 
+def reportVersionToTeamCity:
+	print "##teamcity[buildNumber '${version}']"
+
 def writeBuildInfo:
 	sourceOutFilename = Path.Combine(out, 'BuildInfo.txt')
 	lines = ["Build info:","===================="]
@@ -37,6 +40,7 @@ def revertAssemblyInfo:
 	index.Checkout(fullpath)
 
 setVersion()
+reportVersionToTeamCity()
 getRepo()
 
 
