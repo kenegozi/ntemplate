@@ -54,8 +54,10 @@
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="EndToEnd\EndToEndTests.cs" />
+    <Compile Include="EndToEnd\LanguageFeaturesTests.cs" />
     <Compile Include="EndToEnd\MarkupAndCodeBlocksTests.cs" />
     <Compile Include="EndToEnd\ParametersTests.cs" />
+    <Compile Include="EndToEnd\PartialTemplateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

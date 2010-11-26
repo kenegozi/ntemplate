@@ -28,6 +28,8 @@ namespace NTemplate.Compiler
 		{
 			public override string GetCode()
 			{
+				if (string.IsNullOrEmpty(Content)) return string.Empty;
+
 				var content = Content;
 				if (Content[0] == '=')
 					content = "Write(" + content.Substring(1) + ");";

@@ -41,6 +41,12 @@ public override void Render() {{
 			parameters.ReferencedAssemblies.Add("NTemplate.dll");
 			parameters.ReferencedAssemblies.Add("NTemplate.Tests.dll");
 			var result = codeProvider.CompileAssemblyFromSource(parameters, generatedClass);
+			if (result.Errors.Count > 0)
+			{
+				var messages = result.Errors.Cast<CompilerError>().Select(err => err.ToString());
+				var message = messages.Aggregate("Could not compile "+name,(a, b) => a + Environment.NewLine + b);
+				throw new Exception(message);
+			}
 			return result.CompiledAssembly.GetType(className);
 		}
 

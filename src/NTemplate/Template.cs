@@ -38,8 +38,7 @@ namespace NTemplate
 		}
 		protected void RenderPartial(string name, IDictionary parameters)
 		{
-			Template partial = _engine.GetTemplate(GetRootedTemplateName(name), parameters, Writer);
-			//subView.Initialize(viewEngine, writer, Context, Controller, controllerContext, Properties);
+			Template partial = _engine.GetTemplate(GetRootedTemplateName(name), _properties, Writer);
 
 			// bring parameters to the subview
 			if (parameters != null)
