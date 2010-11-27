@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
 using System.Text;
 using NTemplate.Compiler;
 
@@ -63,11 +64,21 @@ namespace NTemplate
 		private readonly AbstractCompiler _compiler = new AspViewCompiler();
 
 		private Dictionary<string, Type> _compiledTemplates = new Dictionary<string, Type>();
+		private Dictionary<long, Type> _compiledTemplatesByKey = new Dictionary<long, Type>();
 
 		public void Compile(string templateContent, string templateName)
 		{
-			var compiled = _compiler.Compile(templateName, templateContent);
+			var templateKey =
+				Convert.ToBase64String(new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(templateContent))).GetHashCode();
+			Type compiled;
+			if (_compiledTemplatesByKey.TryGetValue(templateKey, out compiled) == false)
+			{
+				compiled = _compiler.Compile(templateName, templateContent);
+				_compiledTemplatesByKey[templateKey] = compiled;
+			}
+
 			_compiledTemplates[templateName] = compiled;
+			
 		}
 
 		public Template GetTemplate(string templateName, IDictionary parameters, TextWriter writer)
