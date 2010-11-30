@@ -39,7 +39,6 @@ public override void Render() {{
 			parameters.GenerateInMemory = true;
 			parameters.GenerateExecutable = false;
 			parameters.ReferencedAssemblies.Add("NTemplate.dll");
-			parameters.ReferencedAssemblies.Add("NTemplate.Tests.dll");
 			var result = codeProvider.CompileAssemblyFromSource(parameters, generatedClass);
 			if (result.Errors.Count > 0)
 			{
