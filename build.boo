@@ -3,9 +3,11 @@ import System.IO
 
 import GitSharp 
 
+projectName = "NTemplate"
+
 repo as Repository
 version as string
-slnFile = ".\\src\\ntemplate.sln"
+slnFile = ".\\src\\${projectName}.sln"
 configuration = 'Release'
 rootDir = Directory.GetCurrentDirectory()
 outDir = Path.Combine(rootDir, "out")
@@ -75,23 +77,28 @@ target build:
 
 desc "run unit tests"
 target test:
-	test_assemblies = (".\\src\\NTemplate.Tests\\bin\\${configuration}\\NTemplate.Tests.dll",)
+	test_assemblies = (".\\src\\${projectName}.Tests\\bin\\${configuration}\\${projectName}.Tests.dll",)
 	nunit(assemblies: test_assemblies, toolPath: ".\\src\\packages\\NUnit.2.5.7.10213\\Tools\\nunit-console.exe")
 	
 desc "copy artifacts to output directory"
 target package:
 	writeBuildInfo()
-	cp(".\\src\\NTemplate\\bin\\${configuration}\\NTemplate.dll", Path.Combine(outDir, "NTemplate.dll"))
-	cp(".\\src\\NTemplate\\bin\\${configuration}\\NTemplate.pdb", Path.Combine(outDir, "NTemplate.pdb"))
+
+	for file in Directory.GetFiles(".\\src\\${projectName}\\bin\\${configuration}\\"):
+		cp(file, Path.Combine(outDir, Path.GetFileName(file)))
+
 	cp(".\\license.txt", Path.Combine(outDir, "license.txt"))
 
-	zipFile = "NTemplate-"+version+".zip"
+	zipFile = "${projectName}-"+version+".zip"
 	zip(outDir, Path.Combine(outDir, zipFile))
 	mkdir(artifactsDir)
 	File.Move(Path.Combine(outDir, zipFile), Path.Combine(artifactsDir, zipFile))
-	File.Delete(Path.Combine(outDir, "NTemplate.dll"))
-	File.Delete(Path.Combine(outDir, "NTemplate.pdb"))
-	File.Delete(Path.Combine(outDir, "license.txt"))
-	File.Delete(Path.Combine(outDir, "BuildInfo.txt"))
-	File.Move(Path.Combine(".\\", "TestResult.xml"), Path.Combine(artifactsDir, "TestResult.xml"))
+	
+	# nuget
+	#for file in Directory.GetFiles(outDir):
+	#
+	
+	for file in Directory.GetFiles(outDir):
+		File.Delete(file)
 
+	File.Move(Path.Combine(".\\", "TestResult.xml"), Path.Combine(artifactsDir, "TestResult.xml"))
