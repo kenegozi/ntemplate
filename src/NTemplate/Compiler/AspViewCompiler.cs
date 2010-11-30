@@ -38,6 +38,8 @@ public override void Render() {{
 			var parameters = new CompilerParameters();
 			parameters.GenerateInMemory = true;
 			parameters.GenerateExecutable = false;
+			parameters.ReferencedAssemblies.Add("System.dll");
+			parameters.ReferencedAssemblies.Add("System.Core.dll");
 			parameters.ReferencedAssemblies.Add("NTemplate.dll");
 			var result = codeProvider.CompileAssemblyFromSource(parameters, generatedClass);
 			if (result.Errors.Count > 0)
