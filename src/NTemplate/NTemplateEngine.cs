@@ -24,14 +24,32 @@ namespace NTemplate
 	public partial class NTemplateEngine
 	{
 		private Options options;
+		string _binFolder;
 		private ITemplateSourceLoader templateSourceLoader;
 		List<ICompilationContext> _compilationContexts = new List<ICompilationContext>();
 		private bool _needsRecompile;
 		private readonly List<string> _assemblies = new List<string>();
-
+		public string[] ReferencesAssemblies { get { return _assemblies.ToArray(); } }
 		public void AddAssembly(string assembly)
 		{
+			AddAssembly(assembly, false);
+		}
+		public void AddAssembly(string assembly, bool isFromGac)
+		{
+			if (isFromGac == false && Path.IsPathRooted(assembly) == false && _binFolder != null)
+				assembly = Path.Combine(_binFolder, assembly);
+
 			_assemblies.Add(assembly);
+		}
+
+		public NTemplateEngine(string binFolder)
+		{
+			_binFolder = binFolder;
+			_compiler = new AspViewCompiler(this);
+			AddAssembly("NTemplate.dll");
+		}
+		public NTemplateEngine() : this(null)
+		{
 		}
 
 		public void Initialize()
@@ -61,7 +79,7 @@ namespace NTemplate
 			}
 		}
 
-		private readonly AbstractCompiler _compiler = new AspViewCompiler();
+		private readonly AbstractCompiler _compiler;
 
 		private Dictionary<string, Type> _compiledTemplates = new Dictionary<string, Type>();
 		private Dictionary<long, Type> _compiledTemplatesByKey = new Dictionary<long, Type>();

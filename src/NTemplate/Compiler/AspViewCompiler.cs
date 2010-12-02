@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CSharp;
 using NTemplate.Compiler.PreCompiler.Steps;
+using NTemplate;
 
 namespace NTemplate.Compiler
 {
 	public class AspViewCompiler : AbstractCompiler
 	{
+		NTemplateEngine _engine;
+		public AspViewCompiler(NTemplateEngine engine)
+		{
+			_engine = engine;
+		}
 		private static readonly string DefaultBaseClass = "NTemplate.Template";
 		public override Type Compile(string name, string content)
 		{
@@ -40,7 +46,8 @@ public override void Render() {{
 			parameters.GenerateExecutable = false;
 			parameters.ReferencedAssemblies.Add("System.dll");
 			parameters.ReferencedAssemblies.Add("System.Core.dll");
-			parameters.ReferencedAssemblies.Add("NTemplate.dll");
+			foreach (var assembly in _engine.ReferencesAssemblies)
+				parameters.ReferencedAssemblies.Add(assembly);
 			var result = codeProvider.CompileAssemblyFromSource(parameters, generatedClass);
 			if (result.Errors.Count > 0)
 			{
