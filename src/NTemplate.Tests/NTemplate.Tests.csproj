@@ -53,6 +53,7 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="EndToEnd\PageDirectiveTests.cs" />
     <Compile Include="EndToEnd\EndToEndTests.cs" />
     <Compile Include="EndToEnd\LanguageFeaturesTests.cs" />
     <Compile Include="EndToEnd\MarkupAndCodeBlocksTests.cs" />

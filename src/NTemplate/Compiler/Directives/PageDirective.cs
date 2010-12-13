@@ -6,8 +6,6 @@ namespace NTemplate.Compiler.Directives
 	{
 		public PageDirective(string content)
 		{
-			throw new Exception("page directive is not yet supported");
-			//		Content = content;
 
 		}
 

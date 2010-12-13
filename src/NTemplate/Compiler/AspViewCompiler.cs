@@ -33,6 +33,8 @@ public override void Render() {{
 }}
 }}
 ";
+			new ExtractPageDirectiveStep().Execute(templateInfo);
+			new DetermineBaseClassStep().Execute(templateInfo);
 			var baseClass = templateInfo.CustomBaseClass ?? DefaultBaseClass;
 			var className = GetClassName(templateInfo.Name);
 			new ProcessBlocksStep().Execute(templateInfo);
