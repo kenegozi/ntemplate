@@ -38,6 +38,7 @@ namespace NTemplate.Compiler
 		}
 		public class InputLine
 		{
+			public int LineNumber;
 			public string Content;
 			public bool Processed;
 		}

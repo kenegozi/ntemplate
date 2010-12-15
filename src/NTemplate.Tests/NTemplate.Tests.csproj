@@ -53,6 +53,8 @@
     <Compile Include="..\SolutionAssemblyInfo.cs">
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Compiler\PreCompilationSteps\ExtractPageDirectiveStepTests.cs" />
+    <Compile Include="EndToEnd\ImportDirectivesTests.cs" />
     <Compile Include="EndToEnd\PageDirectiveTests.cs" />
     <Compile Include="EndToEnd\EndToEndTests.cs" />
     <Compile Include="EndToEnd\LanguageFeaturesTests.cs" />
@@ -70,6 +72,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

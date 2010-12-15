@@ -42,16 +42,17 @@
     <Compile Include="Compiler\ITemplateSourceLoader.cs" />
     <Compile Include="Compiler\PreCompiler\Steps\DetermineBaseClassStep.cs" />
     <Compile Include="Compiler\PreCompiler\Steps\ExtractPageDirectiveStep.cs" />
+    <Compile Include="Compiler\PreCompiler\Steps\ImportDirectivesStep.cs" />
     <Compile Include="Compiler\PreCompiler\Steps\IPreCompilationStep.cs" />
     <Compile Include="Compiler\PreCompiler\Steps\ProcessBlocksStep.cs" />
     <Compile Include="Compiler\TemplateCompilationInfo.cs" />
     <Compile Include="Internal\TemplateParameters.cs" />
     <Compile Include="NTemplateEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-		<Compile Include="..\SolutionAssemblyInfo.cs">
-			<Link>Properties\SolutionAssemblyInfo.cs</Link>
-		</Compile>
-		<Compile Include="Template.cs" />
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>Properties\SolutionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Template.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

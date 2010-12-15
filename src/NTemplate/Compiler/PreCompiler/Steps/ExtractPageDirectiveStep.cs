@@ -13,15 +13,26 @@ namespace NTemplate.Compiler.PreCompiler.Steps
 
 		public void Execute(TemplateCompilationInfo templateCompilationInfo)
 		{
-			var pageDirectiveLine = templateCompilationInfo.OriginalLines
-				.Where(l => l.Processed == false)
-				.Where(l => PageDirective.IsMatch(l.Content))
-				.FirstOrDefault();
+			var pageDirectives = (from l in templateCompilationInfo.OriginalLines
+									  where l.Processed == false
+									  let match = PageDirective.Match(l.Content)
+									  where match.Success
+									  select new { Line = l, Match = match })
+								.ToArray();
 
-			if (pageDirectiveLine == null) return;
+			if (pageDirectives.Length==0)
+				return;
 
-			pageDirectiveLine.Processed = true;
-			templateCompilationInfo.PageDirective = new PageDirective(pageDirectiveLine.Content);
+			if (pageDirectives.Length > 1)
+				throw new Exception("there can only be up to one Page directive in a template, sorry.");
+
+			var pageDirective = pageDirectives[0];
+
+			pageDirective.Line.Processed = true;
+			string baseClass = null;
+			if (pageDirective.Match.Groups["base"].Success)
+				baseClass = pageDirective.Match.Groups["base"].Value;
+			templateCompilationInfo.PageDirective = new PageDirective(pageDirective.Line, baseClass);
 		}
 	}
 }
