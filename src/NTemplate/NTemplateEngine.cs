@@ -111,15 +111,26 @@ namespace NTemplate
 		{
 			return Render(templateName, null);
 		}
+
 		public string Render(string templateName, IDictionary parameters)
 		{
 			var buffer = new StringBuilder();
 			using (var writer = new StringWriter(buffer))
 			{
-				var instance = GetTemplate(templateName, parameters, writer);
-				instance.Render();
+				Render(writer, templateName, parameters);
 			}
 			return buffer.ToString();
+		}
+
+		public void Render(TextWriter writer, string templateName)
+		{
+			Render(writer, templateName, null);
+		}
+
+		public void Render(TextWriter writer, string templateName, IDictionary parameters)
+		{
+			var instance = GetTemplate(templateName, parameters, writer);
+			instance.Render();
 		}
 	}
 }
