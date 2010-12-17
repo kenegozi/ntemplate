@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<package> 
+  <metadata> 
+    <id>NTemplate</id> 
+    <version>%VERSION%</version> 
+    <authors>Ken Egozi</authors> 
+    <description>ERB/ASP style templating for .NET</description> 
+    <language>en-US</language> 
+  </metadata> 
+</package>
